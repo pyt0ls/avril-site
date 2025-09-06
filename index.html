@@ -3,199 +3,179 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>kn0w - Bot de Discord</title>
+  <title>Avril - Bot de Discord</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     * {
-      box-sizing: border-box;
-    }
-    html {
-      scroll-behavior: smooth;
-    }
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Poppins', sans-serif;
-      background: #000;
-      color: #e0e0e0;
-      text-align: center;
-      overflow-x: hidden;
-    }
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #000;   /* fundo preto */
+  color: #fff;        /* texto branco */
+  text-align: center;
+  overflow-x: hidden;
+}
 
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      pointer-events: none;
-    }
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  pointer-events: none;
+}
 
-    .avatar {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-top: 40px;
-      border: 5px solid #00bcd4;
-      background-color: #000;
-      filter: drop-shadow(0 0 6px #00bcd4);
-    }
+.avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 40px;
+  border: 5px solid #fff; /* branco */
+  background-color: #000;
+  filter: drop-shadow(0 0 6px #fff);
+}
 
-    h1 {
+h1, h2, .subtitle {
+  color: #fff;         /* branco */
+  text-shadow: none;
+}
+
+h1 {
   font-size: 3em;
-  color: #00bcd4;
   margin: 20px 0 10px;
-  text-shadow:
-    0 0 2px #00bcd4,
-    0 0 4px #00bcd4,
-    0 0 6px #00e5ff;
   transition: color 0.3s ease;
 }
 
 h1:hover {
-  color: #4FC3F7;
-  text-shadow:
-    0 0 3px #4FC3F7,
-    0 0 6px #8BE9FF;
+  color: #ccc;   /* cinza claro */
 }
 
-    .subtitle {
-      font-size: 1.2em;
-      color: #ccc;
-      margin-bottom: 30px;
-      text-shadow: 0 0 5px #008ba3;
-    }
+.subtitle {
+  font-size: 1.2em;
+  color: #ccc;    /* cinza claro */
+  margin-bottom: 30px;
+}
 
-    .buttons a {
-      display: inline-block;
-      margin: 10px;
-      padding: 15px 30px;
-      background: linear-gradient(90deg, #00bcd4, #4FC3F7);
-      color: #000;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
-      transition: transform 0.3s, background 0.3s;
-      box-shadow:
-        0 0 10px #00bcd4,
-        0 0 20px #4FC3F7;
-    }
+.buttons a, .nav-btn, .glass-section a {
+  display: inline-block;
+  margin: 10px;
+  padding: 15px 30px;
+  background: #fff;   /* branco */
+  color: #000;        /* texto preto */
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: transform 0.3s, background 0.3s;
+  box-shadow: 0 0 10px #fff;
+}
 
-    .buttons a:hover {
-      transform: scale(1.05);
-      background: linear-gradient(90deg, #4FC3F7, #00bcd4);
-      box-shadow:
-        0 0 20px #4FC3F7,
-        0 0 30px #00e5ff;
-      color: #000;
-    }
+.buttons a:hover, .nav-btn:hover {
+  transform: scale(1.05);
+  background: #ccc;  /* cinza claro */
+  box-shadow: 0 0 15px #fff;
+  color: #000;
+}
 
-    section {
-      padding: 30px 20px;
-      max-width: 800px;
-      margin: 0 auto;
-    }
+section {
+  padding: 30px 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
 
-    section:not(:first-of-type) {
-      margin-top: 20px;
-    }
+section:not(:first-of-type) {
+  margin-top: 20px;
+}
 
-    h2 {
-      margin-bottom: 20px;
-      font-size: 2.5em;
-      color: #00bcd4;
-      text-shadow:
-        0 0 10px #00bcd4,
-        0 0 20px #4FC3F7;
-    }
+ul {
+  list-style: none;
+  padding: 0;
+  font-size: 1.2em;
+}
 
-    ul {
-      list-style: none;
-      padding: 0;
-      font-size: 1.2em;
-    }
+ul li {
+  margin: 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
 
-    ul li {
-      margin: 12px 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
+ul li span.icon {
+  font-size: 1.5em;
+  filter: drop-shadow(0 0 3px #fff);
+}
 
-    ul li span.icon {
-      font-size: 1.5em;
-      filter: drop-shadow(0 0 3px #00bcd4);
-    }
+.creator {
+  margin-top: 20px;
+}
 
-    .creator {
-      margin-top: 20px;
-    }
+.creator img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #fff; /* branco */
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 5px #fff);
+  transition: transform 0.3s ease;
+}
 
-    .creator img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid #00bcd4;
-      margin-bottom: 10px;
-      filter: drop-shadow(0 0 5px #00bcd4);
-      transition: transform 0.3s ease;
-    }
+.creator img:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 10px #ccc);
+}
 
-    .creator img:hover {
-      transform: scale(1.05);
-      filter: drop-shadow(0 0 10px #4FC3F7);
-    }
+footer {
+  background: #111;  /* quase preto */
+  padding: 20px;
+  font-size: 0.9em;
+  color: #ccc;
+  text-align: center;
+  user-select: none;
+}
 
-    footer {
-      background: #111;
-      padding: 20px;
-      font-size: 0.9em;
-      color: #666;
-      text-align: center;
-      user-select: none;
-    }
+.piscando {
+  color: #fff;
+  text-decoration: none;
+  animation: pulse 1.8s infinite;
+  display: inline-block;
+  margin: 5px 0;
+  cursor: pointer;
+  user-select: text;
+  transition: color 0.3s;
+}
 
-    .piscando {
-      color: #00bcd4;
-      text-decoration: none;
-      animation: pulse 1.8s infinite;
-      display: inline-block;
-      margin: 5px 0;
-      cursor: pointer;
-      user-select: text;
-      transition: color 0.3s;
-    }
+.piscando:hover {
+  color: #ccc;
+}
 
-    .piscando:hover {
-      color: #4FC3F7;
-      text-shadow:
-        0 0 5px #4FC3F7,
-        0 0 10px #8BE9FF;
-    }
+@keyframes pulse {
+  0% { color: #fff; }
+  50% { color: #ccc; }
+  100% { color: #fff; }
+}
 
-    @keyframes pulse {
-      0% { color: #00bcd4; }
-      50% { color: #4FC3F7; }
-      100% { color: #00bcd4; }
-    }
+.glass-section {
+  background: rgba(255, 255, 255, 0.05);  /* transparente branco */
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(255,255,255,0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.3s;
+}
 
-    .glass-section {
-      background: rgba(0, 188, 212, 0.12);
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0, 188, 212, 0.2);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      transition: transform 0.3s;
-    }
+.glass-section:hover {
+  transform: scale(1.02);
+}
 
-    .glass-section:hover {
-      transform: scale(1.02);
-    }
-
-    header {
+header {
   padding: 8px 20px;
   display: flex;
   justify-content: space-between;
@@ -298,7 +278,7 @@ h1:hover {
 
   <!-- Avatar e Título -->
   <img src="bot.jpg" alt="Avatar do Bot" class="avatar">
-  <h1 id="inicio">kn0w</h1>
+  <h1 id="inicio">Avril</h1>
   <p class="subtitle">Transforme seu servidor com facilidade!</p>
 
   <!-- Botões -->
@@ -309,8 +289,8 @@ h1:hover {
 
   <!-- SOBRE -->
   <section>
-    <h2>Sobre o kn0w</h2>
-    <p>O kn0w é um bot multifuncional gratuito para Discord, perfeito para gerenciar, moderar e divertir sua comunidade com comandos de Economia, Moderação, Utilidade, ChatGPT e muito mais.</p>
+    <h2>Sobre a Avril</h2>
+    <p>A Avril é uma bot multifuncional e gratuita, projetada para ajudar a gerenciar e organizar suas comunidades do Discord. Com uma variedade de comandos e recursos para Economia, Moderação e Diversão, avril é perfeita para servidores que buscam uma solução completa e fácil de usar. Venha conhecer a avril e veja como ela pode transformar sua comunidade!</p>
   </section>
 
   <!-- PLANOS -->
@@ -352,11 +332,11 @@ h1:hover {
 
   <!-- RODAPÉ -->
   <footer>
-    © 2025 kn0w. <span class="piscando">Powered by pytols.</span>
+    © 2025 Avril. <span class="piscando">Powered by pytols.</span>
   </footer>
 <script>
-  const CLIENT_ID = '1361444936880492604'; // Seu client ID
-  const REDIRECT_URI = 'https://kn0w.infy.uk/';
+  const CLIENT_ID = '1351683702333374494'; // Seu client ID
+  const REDIRECT_URI = 'https://avril-dc.netlify.app';
   const SCOPE = 'identify';
 
   function loginDiscord() {
