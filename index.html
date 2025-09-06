@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>kn0w - Bot de Discord</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #000;
+      color: #e0e0e0;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-top: 40px;
+      border: 5px solid #00bcd4;
+      background-color: #000;
+      filter: drop-shadow(0 0 6px #00bcd4);
+    }
+
+    h1 {
+  font-size: 3em;
+  color: #00bcd4;
+  margin: 20px 0 10px;
+  text-shadow:
+    0 0 2px #00bcd4,
+    0 0 4px #00bcd4,
+    0 0 6px #00e5ff;
+  transition: color 0.3s ease;
+}
+
+h1:hover {
+  color: #4FC3F7;
+  text-shadow:
+    0 0 3px #4FC3F7,
+    0 0 6px #8BE9FF;
+}
+
+    .subtitle {
+      font-size: 1.2em;
+      color: #ccc;
+      margin-bottom: 30px;
+      text-shadow: 0 0 5px #008ba3;
+    }
+
+    .buttons a {
+      display: inline-block;
+      margin: 10px;
+      padding: 15px 30px;
+      background: linear-gradient(90deg, #00bcd4, #4FC3F7);
+      color: #000;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: transform 0.3s, background 0.3s;
+      box-shadow:
+        0 0 10px #00bcd4,
+        0 0 20px #4FC3F7;
+    }
+
+    .buttons a:hover {
+      transform: scale(1.05);
+      background: linear-gradient(90deg, #4FC3F7, #00bcd4);
+      box-shadow:
+        0 0 20px #4FC3F7,
+        0 0 30px #00e5ff;
+      color: #000;
+    }
+
+    section {
+      padding: 30px 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    section:not(:first-of-type) {
+      margin-top: 20px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 2.5em;
+      color: #00bcd4;
+      text-shadow:
+        0 0 10px #00bcd4,
+        0 0 20px #4FC3F7;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      font-size: 1.2em;
+    }
+
+    ul li {
+      margin: 12px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    ul li span.icon {
+      font-size: 1.5em;
+      filter: drop-shadow(0 0 3px #00bcd4);
+    }
+
+    .creator {
+      margin-top: 20px;
+    }
+
+    .creator img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #00bcd4;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 5px #00bcd4);
+      transition: transform 0.3s ease;
+    }
+
+    .creator img:hover {
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 10px #4FC3F7);
+    }
+
+    footer {
+      background: #111;
+      padding: 20px;
+      font-size: 0.9em;
+      color: #666;
+      text-align: center;
+      user-select: none;
+    }
+
+    .piscando {
+      color: #00bcd4;
+      text-decoration: none;
+      animation: pulse 1.8s infinite;
+      display: inline-block;
+      margin: 5px 0;
+      cursor: pointer;
+      user-select: text;
+      transition: color 0.3s;
+    }
+
+    .piscando:hover {
+      color: #4FC3F7;
+      text-shadow:
+        0 0 5px #4FC3F7,
+        0 0 10px #8BE9FF;
+    }
+
+    @keyframes pulse {
+      0% { color: #00bcd4; }
+      50% { color: #4FC3F7; }
+      100% { color: #00bcd4; }
+    }
+
+    .glass-section {
+      background: rgba(0, 188, 212, 0.12);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0, 188, 212, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: transform 0.3s;
+    }
+
+    .glass-section:hover {
+      transform: scale(1.02);
+    }
+
+    header {
+  padding: 8px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #111;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navbar-left,
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.nav-btn {
+  padding: 8px 16px;
+  background: #00bcd4;
+  color: #000;
+  font-weight: 600;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.9em;
+  transition: 0.2s ease;
+  box-shadow: none;
+}
+
+.nav-btn:hover {
+  background: #4FC3F7;
+  color: #000;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Efeito de queda atrás -->
+  <canvas id="fallingCanvas"></canvas>
+  <script>
+    const canvas = document.getElementById("fallingCanvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+
+    for (let i = 0; i < 120; i++) {  // mais partículas
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 2 + 1,
+        speedY: Math.random() * 1.2 + 0.6,
+        alpha: Math.random() * 0.6 + 0.2
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 188, 212, ${p.alpha})`;
+        ctx.shadowColor = `rgba(0, 188, 212, ${p.alpha})`;
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        p.y += p.speedY;
+        if (p.y > canvas.height) {
+          p.y = -10;
+          p.x = Math.random() * canvas.width;
+        }
+      });
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+
+  <!-- NAVBAR -->
+  <header>
+  <nav style="display: flex; align-items: center; justify-content: flex-end; gap: 15px; width: 100%; max-width: 1200px; margin: 0 auto;">
+    <!-- Botões ativos -->
+    <a href="#inicio" class="nav-btn">Início</a>
+    <a href="https://discord.gg/NmWy87RjFe" target="_blank" class="nav-btn">Suporte</a>
+
+    <!-- Login -->
+    <div id="discord-login-container" style="display: flex; align-items: center; gap: 10px;">
+      <a id="discord-login-btn" class="nav-btn">Login</a>
+      <div id="discord-avatar" style="display: none;"></div>
+    </div>
+  </nav>
+</header>
+
+  <!-- Avatar e Título -->
+  <img src="bot.jpg" alt="Avatar do Bot" class="avatar">
+  <h1 id="inicio">kn0w</h1>
+  <p class="subtitle">Transforme seu servidor com facilidade!</p>
+
+  <!-- Botões -->
+  <div class="buttons">
+    <a href="https://discord.com/oauth2/authorize?client_id=1361444936880492604&permissions=8&integration_type=0&scope=bot" target="_blank" rel="noopener noreferrer">Me Adicione</a>
+    <a href="https://discord.gg/NmWy87RjFe" target="_blank" rel="noopener noreferrer">Servidor Oficial</a>
+  </div>
+
+  <!-- SOBRE -->
+  <section>
+    <h2>Sobre o kn0w</h2>
+    <p>O kn0w é um bot multifuncional gratuito para Discord, perfeito para gerenciar, moderar e divertir sua comunidade com comandos de Economia, Moderação, Utilidade, ChatGPT e muito mais.</p>
+  </section>
+
+  <!-- PLANOS -->
+  <section id="planos">
+    <h2>Nossos Planos</h2>
+    <div class="glass-section">
+      <h4 style="font-size: 1.8em; font-weight: bold; margin-bottom: 15px;">Totalmente Gratuito</h4>
+      <p style="color: #ccc; margin-bottom: 25px;">Não é cobrado nada pelo uso do bot e ainda tem suporte comunitário na hora.</p>
+      <a href="https://discord.gg/NmWy87RjFe" target="_blank" rel="noopener noreferrer" style="background: #00bcd4; color: white; padding: 12px 25px; border-radius: 12px; text-decoration: none; display: inline-block;">Entre no servidor</a>
+    </div>
+  </section>
+
+  <!-- CATEGORIAS -->
+  <section id="sistemas">
+    <h2>Categorias</h2>
+    <div class="glass-section" style="font-weight: 600; font-size: 1.4em; line-height: 1.3;">
+      <p><span class="icon">📸</span> Social</p>
+      <p><span class="icon">💰</span> Economia</p>
+      <p><span class="icon">🎉</span> Diversão</p>
+      <p><span class="icon">🎗️</span> Utilidades</p>
+      <p><span class="icon">🛡️</span> Moderação</p>
+    </div>
+  </section>
+
+  <!-- FUNÇÕES -->
+<section>
+  <h2>Funções</h2>
+  <p><strong>Vídeo demonstração - </strong><a href="https://files.fm/f/ubgvm6y39n" target="_blank" rel="noopener noreferrer" class="piscando">(Clique aqui)</a></p>
+  <p><strong>Vídeo complementar - </strong><a href="https://files.fm/f/kzvrw8my3q" target="_blank" rel="noopener noreferrer" class="piscando">(Assista aqui)</a></p>
+</section>
+
+  <!-- DEVELOPER -->
+  <section class="creator">
+    <h2>Developer</h2>
+    <img src="criador.jpg" alt="Foto do Criador" />
+    <p><strong>Discord - </strong><a href="https://discordapp.com/users/437129096674410496" target="_blank" rel="noopener noreferrer" class="piscando">(@pytols#0)</a></p>
+    <p><strong>Instagram - </strong><a href="https://instagram.com/pytols" target="_blank" rel="noopener noreferrer" class="piscando">(@pytols)</a></p>
+  </section>
+
+  <!-- RODAPÉ -->
+  <footer>
+    © 2025 kn0w. <span class="piscando">Powered by pytols.</span>
+  </footer>
+<script>
+  const CLIENT_ID = '1361444936880492604'; // Seu client ID
+  const REDIRECT_URI = 'https://kn0w.infy.uk/';
+  const SCOPE = 'identify';
+
+  function loginDiscord() {
+    const url = `https://discord.com/oauth2/authorize?response_type=token&client_id=${CLIENT_ID}&scope=${SCOPE}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+    window.location.href = url;
+  }
+
+  function getTokenFromUrl() {
+    const hash = window.location.hash.substring(1);
+    const params = new URLSearchParams(hash);
+    return params.get('access_token');
+  }
+
+  async function fetchUser(token) {
+    const res = await fetch('https://discord.com/api/users/@me', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error('Erro ao pegar dados do usuário');
+    return res.json();
+  }
+
+  function showUser(user) {
+    const avatarDiv = document.getElementById('discord-avatar');
+    avatarDiv.innerHTML = `
+      <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" alt="${user.username}" title="${user.username}#${user.discriminator}" style="width:40px; height:40px; border-radius:50%; filter: drop-shadow(0 0 5px #00bcd4);" />
+    `;
+    avatarDiv.style.display = 'block';
+    document.getElementById('discord-login-btn').style.display = 'none';
+  }
+
+  window.addEventListener('load', async () => {
+    const token = getTokenFromUrl();
+    if (token) {
+      try {
+        const user = await fetchUser(token);
+        showUser(user);
+        // Limpa o hash da URL para não ficar o token visível
+        history.replaceState(null, '', window.location.pathname);
+      } catch {
+        // Se token inválido, mostra botão de login
+        document.getElementById('discord-login-btn').style.display = 'block';
+      }
+    }
+  });
+
+  const loginBtn = document.querySelector('#discord-login-btn');
+if (loginBtn) {
+  loginBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    loginDiscord();
+  });
+}
+</script>
+</body>
+</html>
